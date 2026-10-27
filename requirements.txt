@@ -1,0 +1,6 @@
+# Diagnostic Atlas - Streamlit port
+#
+# Verified against Streamlit 1.49.1 (tornado server). Newer 1.5x/1.6x releases
+# also work with the APIs used here, but 1.49.x is the version this app was
+# tested on.
+streamlit==1.49.1
