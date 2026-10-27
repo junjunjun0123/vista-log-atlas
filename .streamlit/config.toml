@@ -1,0 +1,16 @@
+[theme]
+base = "dark"
+primaryColor = "#E2603D"
+backgroundColor = "#0A0E0D"
+secondaryBackgroundColor = "#0F1514"
+textColor = "#E9EFEB"
+
+[server]
+address = "127.0.0.1"
+port = 8501
+maxUploadSize = 100
+headless = true
+fileWatcherType = "none"
+
+[browser]
+gatherUsageStats = false
