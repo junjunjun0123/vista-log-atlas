@@ -18,6 +18,7 @@ Run:
 from __future__ import annotations
 
 import html
+import hashlib
 import json
 import os
 from datetime import datetime
@@ -290,6 +291,7 @@ ss.setdefault("fmt", "auto")
 ss.setdefault("lens", "errors")
 ss.setdefault("mask", True)
 ss.setdefault("sel", None)
+ss.setdefault("upload_epoch", 0)
 
 
 def load_log(text: str, name: str) -> None:
@@ -390,6 +392,12 @@ def fact_row(key: str, value: str) -> str:
     return f"<div><dt>{esc(key)}</dt><dd>{esc(display_fact(key, value))}</dd></div>"
 
 
+def widget_key(prefix: str, raw: str) -> str:
+    """Stable, DOM-safe widget key (record ids contain | : and spaces)."""
+    return f"{prefix}-{hashlib.sha1(raw.encode('utf-8')).hexdigest()[:10]}"
+
+
+
 # --------------------------------------------------------------------------- #
 # Sidebar
 # --------------------------------------------------------------------------- #
@@ -424,7 +432,7 @@ with st.sidebar:
         "Log file",
         type=["log", "txt", "json", "jsonl", "out", "trace", "csv"],
         label_visibility="collapsed",
-        key="side_upload",
+        key=f"side_upload_{ss.upload_epoch}",
     )
     if uploaded is not None:
         signature = f"{uploaded.name}:{uploaded.size}"
@@ -461,6 +469,9 @@ with st.sidebar:
         if st.button("Clear workspace", use_container_width=True, key="clear"):
             load_log("", "")
             ss["sig"] = None
+            # Bump the uploader key so the file that is still attached to the old
+            # widget does not immediately reload itself.
+            ss.upload_epoch = ss.get("upload_epoch", 0) + 1
             st.rerun()
 
     st.markdown(
@@ -597,8 +608,12 @@ with head_right:
             ss.fmt = fmt_choice
             st.rerun()
     with c2:
-        mask_choice = st.toggle("Mask", value=ss.mask, key="mask_toggle", help="Mask identifiers, hosts and correlation IDs")
-        ss.mask = mask_choice
+        ss.mask = st.toggle(
+            "Mask",
+            value=ss.mask,
+            key="mask_toggle",
+            help="Mask identifiers, hosts and correlation IDs",
+        )
     with c3:
         export = {
             "tool": "Diagnostic Atlas",
@@ -686,7 +701,7 @@ with stream_col:
                 with body:
                     st.markdown(signal_card_html(rec), unsafe_allow_html=True)
                 with action:
-                    if st.button("Open", key=f"open-{rec.id}", use_container_width=True):
+                    if st.button("Open", key=widget_key("open", rec.id), use_container_width=True):
                         ss.sel = rec.id
                         st.rerun()
     else:
@@ -712,7 +727,7 @@ with stream_col:
                 with body:
                     st.markdown(incident_card_html(inc), unsafe_allow_html=True)
                 with action:
-                    if st.button("Open", key=f"open-{idx}-{inc.id[:24]}", use_container_width=True):
+                    if st.button("Open", key=widget_key("open", f"{idx}-{inc.id}"), use_container_width=True):
                         ss.sel = inc.first.id
                         st.rerun()
 
