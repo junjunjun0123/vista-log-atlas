@@ -96,7 +96,7 @@ diagnostic-atlas/
 ├── atlas_parser.py         # detection, grouping, facts, fingerprints, masking
 ├── run.py                  # optional launcher (selector event loop on Windows)
 ├── requirements.txt
-├── .streamlit/config.toml  # dark theme, localhost bind, watcher off
+├── .streamlit/config.toml  # dark theme, watcher off
 ├── samples/safe-example.log
 └── tools/preview_static.py # dev-only: renders the markup to static HTML for design review
 ```
@@ -115,19 +115,23 @@ for incident in ap.build_incidents(records):
 
 ## Deploy to Streamlit Community Cloud
 
-1. Push this folder to a GitHub repo.
-2. <https://share.streamlit.io> → New app → pick the repo → main file `app.py`.
-3. Nothing else to configure: no secrets, no network calls, no storage.
+This folder is already pushed to <https://github.com/junjunjun0123/vista-log-atlas>.
+
+1. <https://share.streamlit.io> → **Create app** → "Deploy a public app from GitHub".
+2. Repository `junjunjun0123/vista-log-atlas`, branch `main`, main file `app.py`.
+3. Deploy. `requirements.txt` pins Streamlit 1.49.1, so the build is reproducible.
+4. Nothing else to configure: no secrets, no external calls, no storage.
+
+`config.toml` deliberately does **not** set `server.address` / `server.port` — those are
+supplied by the Cloud runtime and overriding them locally-only would break the proxy.
 
 ---
 
 ## Notes / troubleshooting
 
-* `.streamlit/config.toml` binds to `127.0.0.1` and disables the file watcher. Binding to
-  localhost stops Streamlit from looking up the machine's external IP on startup, and the
-  watcher is off because `watchdog`'s Windows directory-change reader crashed on the
-  machine this was built on. Re-enable with `fileWatcherType = "auto"` if you want hot
-  reload while editing.
+* `.streamlit/config.toml` disables the file watcher, because `watchdog`'s Windows
+  directory-change reader crashed on the machine this was built on. Re-enable with
+  `fileWatcherType = "auto"` if you want hot reload while editing.
 * `run.py` is only needed if you hit an `asyncio` access violation on Windows; plain
   `streamlit run app.py` is the normal path.
 * Large files: parsing is linear and cached per (file, format) pair. A few hundred
