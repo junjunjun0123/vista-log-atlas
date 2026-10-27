@@ -1,0 +1,17 @@
+2026-08-17T03:11:16.4950075+08:00|ERROR|500.1329.0.1|Vista.Connect.WSVistaWebClient-SAMPLE-34ec2c9f92eb4082af9f9e2c0135a21f|-|WSVistaWebClient|"Error Encountered in: Order.ProcessTransCompleteResponse. ErrorNo:0: Error completing order at Cinema: VSS Returned response code 55
+An error was encountered processing the following Order - after Payment was Successfully made by the Customer.
+Processing Step: Payment Finish - TransComplete
+BookingRef: DEMO-5777384; TransactionNumber: 20718076; TransIdTemp: 20025529449;
+PaymentDetails: PaymentNumber: 0; Accepted: YES; PaymentValue(cents): 4100;"
+2026-08-17T03:12:02.0193014+08:00|ERROR|500.1329.0.1|Vista.Connect.WSVistaWebClient-SAMPLE-5c37372743d042a0811612b47365d13f|-|OnlineStoreEmailService|"Send mail failed. See exception stack trace for details. Failure sending mail.,System.Net.Mail.SmtpException
+   at void System.Net.Mail.SmtpClient.Send(MailMessage message)
+Unable to connect to the remote server,System.Net.WebException"
+2026-08-17T03:12:41.1188276+08:00|ERROR|500.1329.0.1|Vista.Connect.WSVistaWebClient-SAMPLE-5c37372743d042a0811612b47365d13f|-|OnlineStoreEmailService|"Send mail failed. See exception stack trace for details. Failure sending mail.,System.Net.Mail.SmtpException
+   at void System.Net.Mail.SmtpClient.Send(MailMessage message)
+Unable to connect to the remote server,System.Net.WebException"
+2026-08-17T03:13:09.8842110+08:00|ERROR|500.1329.0.1|Vista.Connect.WSVistaWebClient-SAMPLE-5c37372743d042a0811612b47365d13f|-|OnlineStoreEmailService|"Send mail failed. See exception stack trace for details. Failure sending mail.,System.Net.Mail.SmtpException
+   at void System.Net.Mail.SmtpClient.Send(MailMessage message)
+Unable to connect to the remote server,System.Net.WebException"
+2026-08-17T03:14:52.7001148+08:00|WARN|500.1329.0.1|Vista.Connect.WSVistaWebClient-SAMPLE-77ac1b0d9f3e4a1c8f2e5d6b7a8c9d0e|-|ApplyLoyaltyRecognitionDiscounts|Loyalty recognition discount values cannot sum to zero. Promotion list contained only zero-value vouchers for BookingNumber: DEMO-5819002
+2026-08-17T03:15:09.6754507+08:00|INFO|500.1329.0.1|Vista.Connect.WSVistaWebClient-SAMPLE-6c8d7edc0bd423ca2d5681bd83b0039|-|WSVistaWebClient|WSVistaWebClient started
+2026-08-17T03:15:10.6754507+08:00|INFO|500.1329.0.1|Vista.Connect.WSVistaWebClient-SAMPLE-6c8d7edc0bd423ca2d5681bd83b0039|-|ConnectKeyValueStoreProvider|Initialising KVS: Connect-OrderCache
